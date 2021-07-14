@@ -1,11 +1,11 @@
 const mysql = require('mysql');
-console.log(global.config);
 
 export class DataBase {
     connected = false;
     con: any;
     constructor() {
-        this.con = mysql.createConnection(global.config.database);
+        let dbconf = global.config.dev ? global.config.hosts.development.database : global.config.hosts.production.database;
+        this.con = mysql.createConnection(dbconf);
     }
 
     query(sql: string){

@@ -32,12 +32,13 @@ process.argv.slice(2).forEach((arg)=> {
 });
 
 global.paths = {
-    root: path.join(__dirname, '../')
+    root: path.join(__dirname, '../'),
+    modules: path.join(__dirname, 'modules')
 }
 global.paths.cache = path.join(global.paths.root, 'cache');
 global.config = require(path.join(global.paths.root, 'config.json'));
 
-console.log(global.config);
+console.log('[index.js] -', global.config);
 
 
 const main = new Main(

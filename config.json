@@ -2,18 +2,26 @@
     "hosts": {
         "production": {
             "httpPort": 80,
-            "httpsPort": 443
+            "httpsPort": 443,
+            "database": {
+                "host": "localhost",
+                "database": "swamp_bot",
+                "user": "swamp_bot",
+                "password": "Pbem14*9"
+            }
         },
         "development": {
-            "httpPort": 3000,
-            "httpsPort": 3030
+            "httpPort": 3100,
+            "httpsPort": 3030,
+            "database": {
+                "host": "45.79.195.37",
+                "database": "swamp_bot",
+                "user": "swamp_bot",
+                "password": "Pbem14*9"
+            }
         }
     },
-    "database": {
-        "host": "172.105.148.20",
-        "database": "alacrity_price_history",
-        "user": "alacrity_devin",
-        "password": "Devin2021!@"
-    },
+    "domain": "https://bot.multihost.net",
+    "dev": true,
     "socketio": false
 }

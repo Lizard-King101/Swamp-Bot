@@ -14,7 +14,6 @@ import axios from 'axios';
 import { Server } from 'node:http';
 import { GET } from './get';
 import { POST } from './post';
-var cron = require('node-cron');
 
 export class Main {
     httpServer: Server | null = null;
@@ -47,20 +46,18 @@ export class Main {
         this.post = new POST(this.app);
         
         this.httpServer = http.createServer(this.app);
-        this.httpsServer = https.createServer({
-            
-        }, this.app);
         
         this.serverListen();
     }
 
     async serverListen() {
-        this.httpServer?.listen(3100, () => {
-            console.log('HTTP listening on port: '+3100);
+        let port = global.config.dev ? global.config.hosts.development.httpPort : global.config.hosts.production.httpPort;
+        this.httpServer?.listen(port, () => {
+            console.log('HTTP listening on port: '+port);
         })
 
-        this.httpsServer?.listen(3030, () => {
-            console.log('HTTPS listening on port: '+3030);
-        })
+        // this.httpsServer?.listen(3030, () => {
+        //     console.log('HTTPS listening on port: '+3030);
+        // })
     }
 }

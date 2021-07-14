@@ -34,9 +34,13 @@ export class POST {
 
         switch(action) {
             case 'gnome':
-
+                res.send('get gnome');
+                console.log(options);
+                
                 break;
             case 'interact':
+                res.send('interact');
+                console.log(options);
                 
                 break;
             default: 

@@ -4,6 +4,7 @@ import { Resource } from './resource';
 import path from 'path';
 
 import fs from 'fs';
+import { GetInclude, RequestResponse } from '../types/get_include';
 
 const mime: any = {
     'js': 'application/javascript',
@@ -50,6 +51,34 @@ export class GET {
                 GET,
                 protocol
             })
+            let req_response: void | RequestResponse;
+
+            if (urlArr[0].match(/^[_]+[a-z]+/gm)) {
+                // fs.exists(path.join(__dirname, 'get_inc', urlArr[0].substr(1) + )))
+                try {
+                    const module: GetInclude = (await import(path.join(global.paths.modules, 'get_inc', urlArr[0].substr(1)))).default(req, res, this.app);
+                    console.log(module);
+
+                    req_response = await module.request().catch((err) => {
+                        res.status(500).send(err);
+                    });
+
+                    if(!req_response) return;
+
+                    if(!req_response.continue) {
+                        res.send(req_response.message);
+                    }
+                    module.after_get();
+
+                    if(!req_response.continue) {
+                        return;
+                    }
+                    
+                } catch (e){
+                    // res.status(404).send('module not found');
+                    console.log('Module not found: ', e);
+                }
+            }
 
             if(this.resource.isResource(urlArr)){
                 let options: any = false;
@@ -60,10 +89,8 @@ export class GET {
                 }
                 
                 if (urlArr[0].match(/^[_]+[a-z]+/gm)) {
-                    
                     this.resource.send(res, path.join(global.paths.root, 'public', urlArr[0].substr(1), urlArr.slice(1).join('/')), options);
                 } else {
-                    
                     this.resource.send(res, path.join(global.paths.root, 'www', urlArr.join('/')), options);
                 }
             } else {
